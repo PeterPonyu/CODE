@@ -121,10 +121,16 @@ class Env(CODEVAE, EnvMixin):
             layer (str): Layer name to extract (e.g., 'counts')
             latent_dim (int): Dimension of latent space for KMeans initialization
         """
-        # Log1p transform the counts
-        self.X = np.log1p(adata.layers[layer].toarray())
+        # Log1p transform the counts - handle both sparse and dense arrays
+        layer_data = adata.layers[layer]
+        if hasattr(layer_data, 'toarray'):
+            # Sparse matrix
+            self.X = np.log1p(layer_data.toarray())
+        else:
+            # Dense array
+            self.X = np.log1p(layer_data)
         self.n_obs = adata.shape[0]
         self.n_var = adata.shape[1]
         # Initialize cluster labels for evaluation
-        self.labels = KMeans(latent_dim).fit_predict(self.X)
+        self.labels = KMeans(n_clusters=latent_dim).fit_predict(self.X)
         return

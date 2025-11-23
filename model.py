@@ -243,17 +243,26 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
         similarity = np.exp(-(distances**2) / (2 * sigma**2))
         transition_matrix = similarity / similarity.sum(axis=1, keepdims=True)
 
-        def sparsify_transitions(trans_matrix, top_k=top_k):
-            """Keep only top-k transitions per cell for efficiency."""
+        def sparsify_transitions(trans_matrix, k):
+            """
+            Keep only top-k transitions per cell for efficiency.
+            
+            Args:
+                trans_matrix (np.ndarray): Full transition probability matrix
+                k (int): Number of top transitions to keep
+            
+            Returns:
+                np.ndarray: Sparse transition matrix
+            """
             n_cells = trans_matrix.shape[0]
             sparse_trans = np.zeros_like(trans_matrix)
             for i in range(n_cells):
-                top_indices = np.argsort(trans_matrix[i])[::-1][:top_k]
+                top_indices = np.argsort(trans_matrix[i])[::-1][:k]
                 sparse_trans[i, top_indices] = trans_matrix[i, top_indices]
                 sparse_trans[i] /= sparse_trans[i].sum()
             return sparse_trans
 
-        transition_matrix = sparsify_transitions(transition_matrix)
+        transition_matrix = sparsify_transitions(transition_matrix, top_k)
         return transition_matrix
 
     def update(self, states):

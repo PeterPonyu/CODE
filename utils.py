@@ -109,7 +109,7 @@ def fetch_score(adata1, q_z, label_true, label_mode="KMeans", batch=False):
     
     # Determine labels based on mode
     if label_mode == "KMeans":
-        labels = KMeans(q_z.shape[1]).fit_predict(q_z)
+        labels = KMeans(n_clusters=q_z.shape[1]).fit_predict(q_z)
     elif label_mode == "Max":
         labels = np.argmax(q_z, axis=1)
     elif label_mode == "Min":

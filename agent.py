@@ -199,7 +199,18 @@ class Agent(Env):
         T = self.take_transition(self.X, top_k)
 
         def multi_step_impute(T, X, steps, decay):
-            """Perform multi-step diffusion through transition matrix."""
+            """
+            Perform multi-step diffusion through transition matrix.
+            
+            Args:
+                T (np.ndarray): Transition probability matrix
+                X (np.ndarray): Input data matrix
+                steps (int): Number of diffusion steps
+                decay (float): Decay factor for weighting
+            
+            Returns:
+                np.ndarray: Imputed data after multi-step diffusion
+            """
             X_current = X.copy()
             X_imputed = X.copy()
             for i in range(steps):
@@ -209,7 +220,19 @@ class Agent(Env):
             return X_imputed
 
         def balanced_impute(T, X, alpha=0.5, steps=3, decay=0.9):
-            """Blend original and imputed data."""
+            """
+            Blend original and imputed data.
+            
+            Args:
+                T (np.ndarray): Transition probability matrix
+                X (np.ndarray): Input data matrix
+                alpha (float): Blending weight
+                steps (int): Number of diffusion steps
+                decay (float): Decay factor
+            
+            Returns:
+                np.ndarray: Balanced imputed data
+            """
             X_imputed = multi_step_impute(T, X, steps, decay)
             X_balanced = (1 - alpha) * X + alpha * X_imputed
             return X_balanced
