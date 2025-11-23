@@ -10,7 +10,24 @@ from .module import VAE
 
 class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
     """
-    The main model class for the VAE, integrating different loss components.
+    Main model class integrating VAE with various regularization techniques.
+    
+    Combines multiple loss components from different VAE variants:
+    - Standard VAE reconstruction and KL divergence
+    - DIP-VAE for disentangled representations
+    - Beta-TC-VAE for total correlation penalty
+    - InfoVAE for Maximum Mean Discrepancy regularization
+    - MoCo for contrastive learning
+    - Neural ODE for continuous dynamics modeling
+    
+    Attributes:
+        nn (VAE): The variational autoencoder network
+        nn_optimizer (optim.Adam): Optimizer for network parameters
+        loss (list): Training loss history
+        use_ode (bool): Whether ODE modeling is enabled
+        use_moco (bool): Whether MoCo contrastive learning is enabled
+        loss_mode (str): Type of reconstruction loss ('mse', 'nb', or 'zinb')
+        device (torch.device): Computing device
     """
 
     def __init__(
@@ -59,11 +76,24 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
 
     @torch.no_grad()
     def take_latent(self, state):
+        """
+        Extract latent representations from input data.
+        
+        For ODE models, combines VAE and ODE predictions. For standard VAE,
+        returns encoder output.
+        
+        Args:
+            state (np.ndarray): Input data matrix
+        
+        Returns:
+            np.ndarray: Latent representations
+        """
         state = torch.tensor(state, dtype=torch.float).to(self.device)
         if self.use_ode:
             outputs = self.nn.encoder(state)
             q_z, q_m, q_s, t = outputs
             t = t.cpu()
+            # Sort by time and solve ODE
             t_sorted, sort_idx, sort_idxr = np.unique(
                 t, return_index=True, return_inverse=True
             )
@@ -72,6 +102,7 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
             z0 = q_z_sorted[0]
             q_z_ode = self.nn.solve_ode(self.nn.ode_solver, z0, t_sorted)
             q_z_ode = q_z_ode[sort_idxr]
+            # Combine VAE and ODE predictions
             return (self.vae_reg * q_z + self.ode_reg * q_z_ode).cpu().numpy()
         else:
             outputs = self.nn.encoder(state)
@@ -80,11 +111,21 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
 
     @torch.no_grad()
     def take_iembed(self, state):
+        """
+        Extract information bottleneck embeddings.
+        
+        Args:
+            state (np.ndarray): Input data matrix
+        
+        Returns:
+            np.ndarray: Information bottleneck embeddings
+        """
         states = torch.tensor(state, dtype=torch.float).to(self.device)
         if self.use_ode:
             outputs = self.nn.encoder(states)
             q_z, q_m, q_s, t = outputs
             t = t.cpu()
+            # Sort by time and solve ODE
             t_sorted, sort_idx, sort_idxr = np.unique(
                 t, return_index=True, return_inverse=True
             )
@@ -94,6 +135,7 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
             q_z_ode = self.nn.solve_ode(self.nn.ode_solver, z0, t_sorted)
             q_z_ode = q_z_ode[sort_idxr]
 
+            # Encode both VAE and ODE latents to bottleneck
             le = self.nn.latent_encoder(q_z)
             le_ode = self.nn.latent_encoder(q_z_ode)
             return (self.vae_reg * le + self.ode_reg * le_ode).cpu().numpy()
@@ -133,6 +175,18 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
 
     @torch.no_grad()
     def take_time(self, state):
+        """
+        Extract predicted pseudotime values.
+        
+        Args:
+            state (np.ndarray): Input data matrix
+        
+        Returns:
+            np.ndarray: Pseudotime values in range [0, 1]
+        
+        Raises:
+            AttributeError: If use_ode=False
+        """
         states = torch.tensor(state, dtype=torch.float).to(self.device)
         outputs = self.nn.encoder(states)
         _, _, _, t = outputs
@@ -140,6 +194,18 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
 
     @torch.no_grad()
     def take_grad(self, state):
+        """
+        Compute gradients (velocity) in latent space from ODE.
+        
+        Args:
+            state (np.ndarray): Input data matrix
+        
+        Returns:
+            np.ndarray: Gradient vectors in latent space
+        
+        Raises:
+            AttributeError: If use_ode=False
+        """
         states = torch.tensor(state, dtype=torch.float).to(self.device)
         outputs = self.nn.encoder(states)
         q_z, q_m, q_s, t = outputs
@@ -148,30 +214,72 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
 
     @torch.no_grad()
     def take_transition(self, state, top_k: int = 30):
+        """
+        Compute cell-cell transition probability matrix.
+        
+        Uses ODE gradients to predict future states and computes transition
+        probabilities based on distances in latent space.
+        
+        Args:
+            state (np.ndarray): Input data matrix
+            top_k (int): Number of top transitions to keep per cell
+        
+        Returns:
+            np.ndarray: Sparse transition probability matrix
+        
+        Raises:
+            AttributeError: If use_ode=False
+        """
         states = torch.tensor(state, dtype=torch.float).to(self.device)
         outputs = self.nn.encoder(states)
         q_z, q_m, q_s, t = outputs
         grads = self.nn.ode_solver(t, q_z.cpu()).numpy()
         z_latent = q_z.cpu().numpy()
+        # Predict future state with small time step
         z_future = z_latent + 1e-2 * grads
+        # Compute Gaussian kernel similarity
         distances = pairwise_distances(z_latent, z_future)
         sigma = np.median(distances)
         similarity = np.exp(-(distances**2) / (2 * sigma**2))
         transition_matrix = similarity / similarity.sum(axis=1, keepdims=True)
 
-        def sparsify_transitions(trans_matrix, top_k=top_k):
+        def sparsify_transitions(trans_matrix, k):
+            """
+            Keep only top-k transitions per cell for efficiency.
+            
+            Args:
+                trans_matrix (np.ndarray): Full transition probability matrix
+                k (int): Number of top transitions to keep
+            
+            Returns:
+                np.ndarray: Sparse transition matrix
+            """
             n_cells = trans_matrix.shape[0]
             sparse_trans = np.zeros_like(trans_matrix)
             for i in range(n_cells):
-                top_indices = np.argsort(trans_matrix[i])[::-1][:top_k]
+                top_indices = np.argsort(trans_matrix[i])[::-1][:k]
                 sparse_trans[i, top_indices] = trans_matrix[i, top_indices]
                 sparse_trans[i] /= sparse_trans[i].sum()
             return sparse_trans
 
-        transition_matrix = sparsify_transitions(transition_matrix)
+        transition_matrix = sparsify_transitions(transition_matrix, top_k)
         return transition_matrix
 
     def update(self, states):
+        """
+        Perform one training step: forward pass, loss computation, and backpropagation.
+        
+        Computes the total loss as a weighted combination of:
+        - Reconstruction loss (MSE, NB, or ZINB)
+        - KL divergence
+        - Information bottleneck reconstruction loss
+        - ODE divergence (if use_ode=True)
+        - Regularization terms (DIP, TC, MMD)
+        - MoCo contrastive loss (if use_moco=True)
+        
+        Args:
+            states (np.ndarray): Batch of training data
+        """
         states = torch.tensor(states, dtype=torch.float).to(self.device)
 
         moco_loss = torch.zeros(1).to(self.device)
