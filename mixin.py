@@ -239,22 +239,73 @@ class DipMixin:
 
 
 class EnvMixin:
-    """Mixin class for environment-related functionalities."""
+    """
+    Mixin class for environment-related functionalities.
+    
+    Provides methods for computing evaluation scores and clustering metrics
+    during training, including correlation analysis of latent dimensions.
+    """
 
     def _calc_score(self, latent):
+        """
+        Calculate evaluation scores for latent representations.
+        
+        Args:
+            latent (np.ndarray): Latent representations
+        
+        Returns:
+            tuple: Evaluation metrics (ARI, NMI, ASW, C_H, D_B, P_C)
+        """
         labels = self._calc_label(latent)
         scores = self._metrics(latent, labels)
         return scores
 
     def _calc_label(self, latent):
+        """
+        Compute cluster labels using KMeans.
+        
+        Args:
+            latent (np.ndarray): Latent representations
+        
+        Returns:
+            np.ndarray: Cluster labels
+        """
         labels = KMeans(latent.shape[1]).fit_predict(latent)
         return labels
 
     def _calc_corr(self, latent):
+        """
+        Calculate mean absolute correlation between latent dimensions.
+        
+        Higher values indicate redundant/correlated dimensions, lower values
+        indicate more independent/disentangled representations.
+        
+        Args:
+            latent (np.ndarray): Latent representations
+        
+        Returns:
+            float: Mean absolute correlation (excluding diagonal)
+        """
         acorr = abs(np.corrcoef(latent.T))
         return acorr.sum(axis=1).mean().item() - 1
 
     def _metrics(self, latent, labels):
+        """
+        Compute comprehensive clustering and separation metrics.
+        
+        Args:
+            latent (np.ndarray): Latent representations
+            labels (np.ndarray): Cluster labels
+        
+        Returns:
+            tuple: (ARI, NMI, ASW, C_H, D_B, P_C)
+                - ARI: Adjusted Mutual Information
+                - NMI: Normalized Mutual Information
+                - ASW: Average Silhouette Width
+                - C_H: Calinski-Harabasz score
+                - D_B: Davies-Bouldin score
+                - P_C: Pearson Correlation between dimensions
+        """
         ARI = adjusted_mutual_info_score(self.labels[self.idx], labels)
         NMI = normalized_mutual_info_score(self.labels[self.idx], labels)
         ASW = silhouette_score(latent, labels)
