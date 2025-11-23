@@ -117,7 +117,7 @@ def fetch_score(adata1, q_z, label_true, label_mode="KMeans", batch=False):
     elif label_mode == "Min":
         labels = np.argmin(q_z, axis=1)
     else:
-        raise ValueError("Mode must be in one of KMeans, Max and Min")
+        raise ValueError("Mode must be one of: KMeans, Max, or Min")
 
     adata1.obsm["X_qz"] = q_z
     adata1.obs["label"] = pd.Categorical(labels)
