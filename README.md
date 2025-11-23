@@ -230,11 +230,16 @@ CODE supports multiple VAE regularization techniques:
 If you use CODE in your research, please cite:
 
 ```bibtex
-@software{CODE2025,
-  author = {Fu, Zeyu},
-  title = {CODE: Correlated Latent Space Learning and Continuum Modeling of Single Cell Data},
+@article{Fu2025,
+  title = {Correlated latent space learning for structural differentiation modeling in single cell RNA data},
+  journal = {Computers in Biology and Medicine},
+  volume = {198},
+  pages = {111115},
   year = {2025},
-  url = {https://github.com/PeterPonyu/CODE}
+  issn = {0010-4825},
+  doi = {10.1016/j.compbiomed.2025.111115},
+  url = {https://doi.org/10.1016/j.compbiomed.2025.111115},
+  author = {Zeyu Fu and Chunlin Chen}
 }
 ```
 
