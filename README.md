@@ -238,7 +238,6 @@ If you use CODE in your research, please cite:
   year = {2025},
   issn = {0010-4825},
   doi = {10.1016/j.compbiomed.2025.111115},
-  url = {https://doi.org/10.1016/j.compbiomed.2025.111115},
   author = {Zeyu Fu and Chunlin Chen}
 }
 ```
