@@ -119,7 +119,7 @@ class Env(CODEVAE, EnvMixin):
         Args:
             adata (AnnData): Annotated data object
             layer (str): Layer name to extract (e.g., 'counts')
-            latent_dim (int): Dimension of latent space for KMeans initialization
+            latent_dim (int): Dimension of latent space (used as heuristic for initial clustering)
         """
         # Log1p transform the counts - handle both sparse and dense arrays
         layer_data = adata.layers[layer]
@@ -131,6 +131,8 @@ class Env(CODEVAE, EnvMixin):
             self.X = np.log1p(layer_data)
         self.n_obs = adata.shape[0]
         self.n_var = adata.shape[1]
-        # Initialize cluster labels for evaluation
-        self.labels = KMeans(n_clusters=latent_dim).fit_predict(self.X)
+        # Initialize cluster labels for evaluation using reasonable heuristic
+        # Use min of latent_dim or 10 as a reasonable number of clusters
+        n_clusters = min(latent_dim, 10)
+        self.labels = KMeans(n_clusters=n_clusters, random_state=42).fit_predict(self.X)
         return

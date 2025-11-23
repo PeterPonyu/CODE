@@ -270,7 +270,9 @@ class EnvMixin:
         Returns:
             np.ndarray: Cluster labels
         """
-        labels = KMeans(n_clusters=latent.shape[1]).fit_predict(latent)
+        # Use the number of unique true labels to determine clusters
+        n_clusters = len(np.unique(self.labels))
+        labels = KMeans(n_clusters=n_clusters).fit_predict(latent)
         return labels
 
     def _calc_corr(self, latent):

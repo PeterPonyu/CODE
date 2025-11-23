@@ -14,15 +14,15 @@ print("Loading single-cell data...")
 # Replace with your actual data file
 adata = sc.datasets.pbmc3k()  # Example dataset
 
+# Store raw counts before any transformations
+adata.layers["counts"] = adata.X.copy()
+
 # Preprocess the data
 print("Preprocessing...")
 sc.pp.filter_cells(adata, min_genes=200)
 sc.pp.filter_genes(adata, min_cells=3)
 sc.pp.normalize_total(adata, target_sum=1e4)
 sc.pp.log1p(adata)
-
-# Store raw counts
-adata.layers["counts"] = adata.X.copy()
 
 # Basic preprocessing
 sc.pp.highly_variable_genes(adata, n_top_genes=2000)
