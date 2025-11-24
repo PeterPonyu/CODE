@@ -180,21 +180,21 @@ class InfoMixin:
 
     def _compute_mmd(self, z_posterior_samples, z_prior_samples):
         mean_pz_pz = self._compute_unbiased_mean(
-            self._compute_kernel(z_prior_samples, z_prior_samples), unbaised=True
+            self._compute_kernel(z_prior_samples, z_prior_samples), unbiased=True
         )
         mean_pz_qz = self._compute_unbiased_mean(
-            self._compute_kernel(z_prior_samples, z_posterior_samples), unbaised=False
+            self._compute_kernel(z_prior_samples, z_posterior_samples), unbiased=False
         )
         mean_qz_qz = self._compute_unbiased_mean(
             self._compute_kernel(z_posterior_samples, z_posterior_samples),
-            unbaised=True,
+            unbiased=True,
         )
         mmd = mean_pz_pz - 2 * mean_pz_qz + mean_qz_qz
         return mmd
 
-    def _compute_unbiased_mean(self, kernel, unbaised):
+    def _compute_unbiased_mean(self, kernel, unbiased):
         N, M = kernel.shape
-        if unbaised:
+        if unbiased:
             sum_kernel = kernel.sum(dim=(0, 1)) - torch.diagonal(
                 kernel, dim1=0, dim2=1
             ).sum(dim=-1)
@@ -270,7 +270,9 @@ class EnvMixin:
         Returns:
             np.ndarray: Cluster labels
         """
-        labels = KMeans(n_clusters=latent.shape[1]).fit_predict(latent)
+        # Use the number of unique true labels to determine clusters
+        n_clusters = len(np.unique(self.labels))
+        labels = KMeans(n_clusters=n_clusters).fit_predict(latent)
         return labels
 
     def _calc_corr(self, latent):
