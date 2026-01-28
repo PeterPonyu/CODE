@@ -277,10 +277,10 @@ If you use CODE in your research, please cite our paper:
   pages = {111115},
   year = {2025},
   issn = {0010-4825},
-  doi = {https://doi.org/10.1016/j.compbiomed.2025.111115},
+  doi = {10.1016/j.compbiomed.2025.111115},
   url = {https://www.sciencedirect.com/science/article/pii/S0010482525014684},
   author = {Zeyu Fu and Chunlin Chen},
-  keywords = {Single-cell RNA sequencing, Cellular differentiation modeling, Variational autoencoder, Ordinary differential equations, Correlated latent space learning, Continuous trajectory modeling, Manifold learning},
+  keywords = {Single-cell RNA sequencing, Cellular differentiation modeling, Variational autoencoder, Ordinary differential equations, Correlated latent space learning, Continuous trajectory modeling, Manifold learning}
 }
 ```
 
