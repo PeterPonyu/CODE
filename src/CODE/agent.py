@@ -165,7 +165,7 @@ class Agent(Env):
             np.ndarray: Pseudotime values of shape (n_obs,).
         
         Raises:
-            AttributeError: If model was not trained with use_ode=True.
+            RuntimeError: If model was not trained with use_ode=True.
         """
         time = self.take_time(self.X)
         return time

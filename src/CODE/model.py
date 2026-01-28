@@ -185,8 +185,13 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
             np.ndarray: Pseudotime values in range [0, 1]
         
         Raises:
-            AttributeError: If use_ode=False
+            RuntimeError: If use_ode=False
         """
+        if not self.use_ode:
+            raise RuntimeError(
+                "Pseudotime extraction requires ODE modeling. "
+                "Initialize with use_ode=True."
+            )
         states = torch.tensor(state, dtype=torch.float).to(self.device)
         outputs = self.nn.encoder(states)
         _, _, _, t = outputs
@@ -204,8 +209,13 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
             np.ndarray: Gradient vectors in latent space
         
         Raises:
-            AttributeError: If use_ode=False
+            RuntimeError: If use_ode=False
         """
+        if not self.use_ode:
+            raise RuntimeError(
+                "Gradient extraction requires ODE modeling. "
+                "Initialize with use_ode=True."
+            )
         states = torch.tensor(state, dtype=torch.float).to(self.device)
         outputs = self.nn.encoder(states)
         q_z, q_m, q_s, t = outputs
@@ -228,8 +238,13 @@ class CODEVAE(ScviMixin, DipMixin, BetaTCMixin, InfoMixin):
             np.ndarray: Sparse transition probability matrix
         
         Raises:
-            AttributeError: If use_ode=False
+            RuntimeError: If use_ode=False
         """
+        if not self.use_ode:
+            raise RuntimeError(
+                "Transition matrix computation requires ODE modeling. "
+                "Initialize with use_ode=True."
+            )
         states = torch.tensor(state, dtype=torch.float).to(self.device)
         outputs = self.nn.encoder(states)
         q_z, q_m, q_s, t = outputs
