@@ -2,32 +2,33 @@
 
 <div align="center">
 
-**C**orrelated Latent Space Learning and C**O**ntinuum Mo**DE**ling of Single Cell Data
+**C**orrelated Latent Space Learning and C**O**ntinuum Mo**DE**ling of Single Cell Data (CODEVAE)
 
 [![Python Version](https://img.shields.io/badge/python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.9%2B-red.svg)](https://pytorch.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.compbiomed.2025.111115-blue)](https://doi.org/10.1016/j.compbiomed.2025.111115)
 
 </div>
 
-A powerful Python package for single-cell RNA sequencing data analysis using **Variational Autoencoders (VAE)** with optional **Neural Ordinary Differential Equations (ODE)** for modeling cellular dynamics and developmental trajectories.
+A Python package for single-cell RNA sequencing (scRNA-seq) data analysis using **Variational Autoencoders (VAE)** with optional **Neural Ordinary Differential Equations (ODE)** constraints for modeling cellular dynamics and developmental trajectories.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-- 🧬 **Variational Autoencoder (VAE)**: Learn low-dimensional latent representations of single-cell data
-- 🔄 **Neural ODE Integration**: Model continuous cell state transitions and trajectories
-- 📊 **Multiple Loss Functions**: Support for MSE, Negative Binomial (NB), and Zero-Inflated Negative Binomial (ZINB) losses
-- 🎯 **Advanced Regularization**: Beta-VAE, DIP-VAE, Beta-TC-VAE, and InfoVAE (MMD) regularization options
-- 🔗 **Momentum Contrast (MoCo)**: Unsupervised contrastive learning for improved representations
-- 🌊 **Velocity Field Analysis**: Compute and visualize vector fields for cell state transitions
-- 📈 **Trajectory Inference**: Infer pseudotime and developmental trajectories
-- 🔧 **Data Imputation**: Impute missing values using learned transition matrices
+- **Variational Autoencoder (VAE)**: Learn low-dimensional latent representations of single-cell data
+- **Neural ODE Integration**: Model continuous cell state transitions and trajectories
+- **Multiple Loss Functions**: Support for MSE, Negative Binomial (NB), and Zero-Inflated Negative Binomial (ZINB) losses
+- **Advanced Regularization**: Beta-VAE, DIP-VAE, Beta-TC-VAE, and InfoVAE (MMD) regularization options
+- **Momentum Contrast (MoCo)**: Unsupervised contrastive learning for improved representations
+- **Velocity Field Analysis**: Compute and visualize vector fields for cell state transitions
+- **Trajectory Inference**: Infer pseudotime and developmental trajectories
+- **Data Imputation**: Impute missing values using learned transition matrices
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
@@ -69,7 +70,7 @@ The package automatically installs the following dependencies:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```python
 import scanpy as sc
@@ -106,7 +107,7 @@ For more examples, see the [examples](examples/) directory.
 
 ---
 
-## 📚 Usage Examples
+## Usage Examples
 
 ### Example 1: Basic VAE Analysis
 
@@ -198,7 +199,7 @@ adata.layers["imputed"] = imputed_data
 
 ---
 
-## 🔧 API Reference
+## API Reference
 
 ### Agent Class
 
@@ -241,7 +242,7 @@ The main interface for training and inference.
 
 ---
 
-## 🎓 Advanced Features
+## Advanced Features
 
 ### Regularization Options
 
@@ -264,59 +265,55 @@ CODE supports multiple VAE regularization techniques:
 
 ---
 
-## 📖 Citation
+## Citation
 
 If you use CODE in your research, please cite our paper:
 
 ```bibtex
-@article{Fu2025,
+@article{FU2025111115,
   title = {Correlated latent space learning for structural differentiation modeling in single cell RNA data},
   journal = {Computers in Biology and Medicine},
   volume = {198},
   pages = {111115},
   year = {2025},
   issn = {0010-4825},
-  doi = {10.1016/j.compbiomed.2025.111115},
-  author = {Zeyu Fu and Chunlin Chen}
+  doi = {https://doi.org/10.1016/j.compbiomed.2025.111115},
+  url = {https://www.sciencedirect.com/science/article/pii/S0010482525014684},
+  author = {Zeyu Fu and Chunlin Chen},
+  keywords = {Single-cell RNA sequencing, Cellular differentiation modeling, Variational autoencoder, Ordinary differential equations, Correlated latent space learning, Continuous trajectory modeling, Manifold learning},
 }
 ```
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-We welcome contributions from the community! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to:
+Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 
-- Report bugs
-- Suggest features
-- Submit pull requests
-- Set up your development environment
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Reporting bugs
+- Suggesting features
+- Submitting pull requests
+- Setting up your development environment
 
 ---
 
-## 📞 Contact & Support
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Contact
 
 - **Issues**: Report bugs or request features via [GitHub Issues](https://github.com/PeterPonyu/CODE/issues)
 - **Repository**: [https://github.com/PeterPonyu/CODE](https://github.com/PeterPonyu/CODE)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-We thank the open-source community for the excellent tools and libraries that made this project possible, including:
+This project uses the following open-source libraries:
 
 - [PyTorch](https://pytorch.org/) - Deep learning framework
 - [Scanpy](https://scanpy.readthedocs.io/) - Single-cell analysis toolkit
 - [torchdiffeq](https://github.com/rtqichen/torchdiffeq) - Neural ODE implementation
-
----
-
-<div align="center">
-Made with ❤️ by the CODE team
-</div>

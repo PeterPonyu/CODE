@@ -120,7 +120,18 @@ class Env(CODEVAE, EnvMixin):
             adata (AnnData): Annotated data object
             layer (str): Layer name to extract (e.g., 'counts')
             latent_dim (int): Dimension of latent space (used as heuristic for initial clustering)
+        
+        Raises:
+            KeyError: If the specified layer does not exist in adata.layers
         """
+        # Validate layer exists
+        if layer not in adata.layers:
+            available_layers = list(adata.layers.keys())
+            raise KeyError(
+                f"Layer '{layer}' not found in adata.layers. "
+                f"Available layers: {available_layers}"
+            )
+        
         # Log1p transform the counts - handle both sparse and dense arrays
         layer_data = adata.layers[layer]
         if hasattr(layer_data, 'toarray'):
