@@ -7,14 +7,13 @@
 # CODE
 
 <div align="center">
-
-**C**orrelated Latent Space Learning and C**O**ntinuum Mo**DE**ling of Single Cell Data (CODEVAE)
-
-[![Python Version](https://img.shields.io/badge/python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-1.9%2B-red.svg)](https://pytorch.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.compbiomed.2025.111115-blue)](https://doi.org/10.1016/j.compbiomed.2025.111115)
-
+<p><b>C</b>orrelated Latent Space Learning and C<b>O</b>ntinuum Mo<b>DE</b>ling of Single Cell Data (CODEVAE)</p>
+<p>
+<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.7%2B-blue.svg" alt="Python Version"></a>
+<a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-1.9%2B-red.svg" alt="PyTorch"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a>
+<a href="https://doi.org/10.1016/j.compbiomed.2025.111115"><img src="https://img.shields.io/badge/DOI-10.1016%2Fj.compbiomed.2025.111115-blue" alt="DOI"></a>
+</p>
 </div>
 
 A Python package for single-cell RNA sequencing (scRNA-seq) data analysis using **Variational Autoencoders (VAE)** with optional **Neural Ordinary Differential Equations (ODE)** constraints for modeling cellular dynamics and developmental trajectories.
