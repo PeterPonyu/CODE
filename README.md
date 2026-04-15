@@ -1,3 +1,9 @@
+<div align="center">
+  <a href="https://peterponyu.github.io/">
+    <img src="https://peterponyu.github.io/assets/badges/CODE.svg" width="64" alt="ZF Lab · CODE">
+  </a>
+</div>
+
 # CODE
 
 <div align="center">
