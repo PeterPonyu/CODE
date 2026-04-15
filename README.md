@@ -47,12 +47,6 @@ cd CODE
 pip install -e .
 ```
 
-### Install from PyPI (when available)
-
-```bash
-pip install scCODE
-```
-
 ### Dependencies
 
 The package automatically installs the following dependencies:
