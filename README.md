@@ -11,7 +11,7 @@
 
 </div>
 
-A Python package for single-cell RNA sequencing (scRNA-seq) data analysis using **Variational Autoencoders (VAE)** with optional **Neural Ordinary Differential Equations (ODE)** constraints for modeling cellular dynamics and developmental trajectories.
+A Python package for single-cell RNA sequencing (scRNA-seq) analysis using **Variational Autoencoders (VAE)** with optional **Neural Ordinary Differential Equations (ODE)** constraints for latent dynamics and developmental trajectory modeling.
 
 ---
 
@@ -20,11 +20,9 @@ A Python package for single-cell RNA sequencing (scRNA-seq) data analysis using 
 - **Variational Autoencoder (VAE)**: Learn low-dimensional latent representations of single-cell data
 - **Neural ODE Integration**: Model continuous cell state transitions and trajectories
 - **Multiple Loss Functions**: Support for MSE, Negative Binomial (NB), and Zero-Inflated Negative Binomial (ZINB) losses
-- **Advanced Regularization**: Beta-VAE, DIP-VAE, Beta-TC-VAE, and InfoVAE (MMD) regularization options
-- **Momentum Contrast (MoCo)**: Unsupervised contrastive learning for improved representations
-- **Velocity Field Analysis**: Compute and visualize vector fields for cell state transitions
-- **Trajectory Inference**: Infer pseudotime and developmental trajectories
-- **Data Imputation**: Impute missing values using learned transition matrices
+- **Regularization Options**: Beta-VAE, DIP-VAE, Beta-TC-VAE, and InfoVAE (MMD)
+- **Optional Contrastive Learning**: MoCo-based objectives for selected workflows
+- **Trajectory Analysis Utilities**: Pseudotime, latent transition, and vector-field helpers
 
 ---
 
