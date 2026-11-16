@@ -17,7 +17,7 @@ def read_requirements():
 
 setup(
     name="scCODE",
-    version="0.1.1",
+    version="0.1.2",
     author="Zeyu Fu, Chunlin Chen",
     author_email="",
     description="Correlated latent space learning for structural differentiation modeling in single cell RNA data",
