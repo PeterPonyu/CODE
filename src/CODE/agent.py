@@ -6,7 +6,7 @@ import torch
 import tqdm
 from typing import Optional, Literal
 import numpy as np
-from scipy.sparse import csr_matrix, coo_matrix
+from scipy.sparse import csr_matrix, coo_matrix, issparse
 from scipy.stats import norm
 from sklearn.neighbors import NearestNeighbors
 
@@ -459,7 +459,9 @@ class Agent(Env):
 
         # Optionally add self-transitions for stability
         if self_transition:
-            max_t = T.max(1).A.flatten()
+            row_max = T.max(1)
+            # Sparse results have no .A since SciPy 1.14; densify explicitly.
+            max_t = np.asarray(row_max.todense() if issparse(row_max) else row_max).ravel()
             ub = np.percentile(max_t, 98)
             self_t = np.clip(ub - max_t, 0, 1)
             T.setdiag(self_t)

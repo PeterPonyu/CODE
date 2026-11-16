@@ -227,6 +227,6 @@ def l2_norm(x, axis=-1):
         np.ndarray: L2 norms
     """
     if issparse(x):
-        return np.sqrt(x.multiply(x).sum(axis=axis).A1)
+        return np.sqrt(np.asarray(x.multiply(x).sum(axis=axis)).ravel())
     else:
         return np.sqrt(np.sum(x * x, axis=axis))

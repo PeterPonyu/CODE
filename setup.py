@@ -17,7 +17,7 @@ def read_requirements():
 
 setup(
     name="scCODE",
-    version="0.1.0",
+    version="0.1.1",
     author="Zeyu Fu, Chunlin Chen",
     author_email="",
     description="Correlated Latent Space Learning and Continuum Modeling of Single Cell Data",
