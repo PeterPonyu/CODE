@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "scCODE"
 version = "0.1.1"
-description = "Correlated Latent Space Learning and Continuum Modeling of Single Cell Data"
+description = "Correlated latent space learning for structural differentiation modeling in single cell RNA data"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}
@@ -60,8 +60,10 @@ dev = [
 
 [project.urls]
 Homepage = "https://github.com/PeterPonyu/CODE"
-"Bug Tracker" = "https://github.com/PeterPonyu/CODE/issues"
-"Source Code" = "https://github.com/PeterPonyu/CODE"
+Documentation = "https://peterponyu.github.io/CODE/"
+Source = "https://github.com/PeterPonyu/CODE"
+Paper = "https://doi.org/10.1016/j.compbiomed.2025.111115"
+Issues = "https://github.com/PeterPonyu/CODE/issues"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

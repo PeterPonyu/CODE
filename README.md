@@ -7,12 +7,14 @@
 # CODE
 
 <div align="center">
-<p><b>C</b>orrelated Latent Space Learning and C<b>O</b>ntinuum Mo<b>DE</b>ling of Single Cell Data (CODEVAE)</p>
+<p>Correlated latent space learning for structural differentiation modeling in single cell RNA data</p>
 <p>
 <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.7%2B-blue.svg" alt="Python Version"></a>
 <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-1.9%2B-red.svg" alt="PyTorch"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a>
+<a href="https://github.com/PeterPonyu/CODE/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a>
 <a href="https://doi.org/10.1016/j.compbiomed.2025.111115"><img src="https://img.shields.io/badge/DOI-10.1016%2Fj.compbiomed.2025.111115-blue" alt="DOI"></a>
+<a href="https://pypi.org/project/scCODE/"><img src="https://img.shields.io/pypi/v/scCODE.svg" alt="PyPI"></a>
+<a href="https://doi.org/10.5281/zenodo.24267221"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.24267221.svg" alt="DOI"></a>
 </p>
 </div>
 
@@ -38,6 +40,14 @@ A Python package for single-cell RNA sequencing (scRNA-seq) analysis using **Var
 - Python 3.7 or higher
 - PyTorch 1.9 or higher
 - CUDA (optional, for GPU acceleration)
+
+### Install from PyPI
+
+```bash
+pip install scCODE
+```
+
+The package is published on PyPI as `scCODE`; the import name is `CODE`.
 
 ### Install from Source
 
@@ -100,7 +110,7 @@ adata.obs["pseudotime"] = pseudotime
 adata.obsm["X_iembed"] = iembed
 ```
 
-For more examples, see the [examples](examples/) directory.
+For more examples, see the [examples](https://github.com/PeterPonyu/CODE/tree/main/examples) directory.
 
 ---
 
@@ -285,7 +295,7 @@ If you use CODE in your research, please cite our paper:
 
 ## Contributing
 
-Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+Contributions are welcome. Please see [CONTRIBUTING.md](https://github.com/PeterPonyu/CODE/blob/main/CONTRIBUTING.md) for guidelines on:
 
 - Reporting bugs
 - Suggesting features
@@ -296,7 +306,7 @@ Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/PeterPonyu/CODE/blob/main/LICENSE) file for details.
 
 ---
 

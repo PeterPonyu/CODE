@@ -1,5 +1,5 @@
 """
-CODE: Correlated Latent Space Learning and Continuum Modeling of Single Cell Data
+CODE: Correlated latent space learning for structural differentiation modeling in single cell RNA data
 
 A Python package for advanced single-cell RNA sequencing data analysis using
 Variational Autoencoders (VAE) with optional Neural Ordinary Differential Equations (ODE)
